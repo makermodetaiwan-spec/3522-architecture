@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天躍建築聯誼會通訊錄</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0f2340;
+  --navy2:#16305a;
+  --navy3:#1e3f73;
+  --gold:#c9a84c;
+  --gold2:#e8c97a;
+  --white:#ffffff;
+  --card-text:#0f2340;
+  --muted:#7a8fa8;
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft JhengHei',PingFang TC,sans-serif;
+  background:var(--navy);
+  min-height:100vh;
+  color:#dde4ef;
+}
+header{
+  background:linear-gradient(160deg,#081525 0%,#16305a 100%);
+  border-bottom:3px solid var(--gold);
+  padding:32px 20px 28px;
+  text-align:center;
+  position:relative;
+}
+header::before{
+  content:'';
+  position:absolute;
+  bottom:-3px;left:50%;transform:translateX(-50%);
+  width:120px;height:3px;background:var(--gold2);
+}
+.logo{
+  font-size:1rem;
+  letter-spacing:4px;
+  color:var(--gold);
+  opacity:.7;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+header h1{
+  font-size:1.9rem;
+  font-weight:700;
+  color:var(--gold);
+  letter-spacing:3px;
+  text-shadow:0 2px 12px rgba(201,168,76,.3);
+  margin-bottom:6px;
+}
+header p{
+  color:var(--muted);
+  font-size:.875rem;
+  letter-spacing:1px;
+}
+.controls{
+  max-width:1140px;
+  margin:28px auto 0;
+  padding:0 16px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.search-wrap{
+  flex:1;
+  min-width:200px;
+  position:relative;
+}
+.search-wrap svg{
+  position:absolute;
+  left:12px;top:50%;transform:translateY(-50%);
+  color:var(--muted);
+  pointer-events:none;
+}
+input[type=text]{
+  width:100%;
+  padding:11px 14px 11px 38px;
+  background:#1a3356;
+  border:1.5px solid #2a4a70;
+  border-radius:8px;
+  color:#dde4ef;
+  font-size:.95rem;
+  outline:none;
+  transition:border-color .2s;
+}
+input[type=text]:focus{border-color:var(--gold)}
+input[type=text]::placeholder{color:var(--muted)}
+select{
+  padding:11px 36px 11px 14px;
+  background:#1a3356;
+  border:1.5px solid #2a4a70;
+  border-radius:8px;
+  color:#dde4ef;
+  font-size:.88rem;
+  outline:none;
+  cursor:pointer;
+  transition:border-color .2s;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%237a8fa8' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+}
+select:focus{border-color:var(--gold)}
+.stats{
+  max-width:1140px;
+  margin:14px auto 0;
+  padding:0 20px;
+  color:var(--muted);
+  font-size:.82rem;
+}
+.grid{
+  max-width:1140px;
+  margin:16px auto 48px;
+  padding:0 16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:16px;
+}
+.card{
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 2px 16px rgba(0,0,0,.35);
+  transition:transform .18s,box-shadow .18s;
+  cursor:pointer;
+}
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 6px 24px rgba(201,168,76,.22);
+}
+.card-top{
+  padding:18px 18px 14px;
+  border-left:4px solid var(--gold);
+}
+.card-company{
+  font-size:.98rem;
+  font-weight:700;
+  color:#0f2340;
+  line-height:1.4;
+  margin-bottom:5px;
+}
+.tag{
+  display:inline-block;
+  font-size:.7rem;
+  background:#eef3fa;
+  color:#4a6a90;
+  border-radius:4px;
+  padding:2px 7px;
+  margin-right:4px;
+  margin-bottom:4px;
+}
+.card-person{
+  margin-top:10px;
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.card-name{
+  font-size:.95rem;
+  font-weight:600;
+  color:#0f2340;
+}
+.card-nick{
+  font-size:.8rem;
+  color:#7a8fa8;
+}
+.card-title{
+  width:100%;
+  font-size:.78rem;
+  color:var(--gold);
+  font-weight:600;
+  margin-top:3px;
+  letter-spacing:.5px;
+}
+.card-club{
+  margin-top:6px;
+  font-size:.73rem;
+  color:#9aaabf;
+}
+.card-contact{
+  display:none;
+  background:#f5f8fc;
+  border-top:1px solid #dde8f4;
+  padding:14px 18px;
+}
+.card.open .card-contact{display:block}
+.chevron{
+  float:right;
+  width:18px;height:18px;
+  color:#b0bfd4;
+  transition:transform .2s;
+  margin-top:2px;
+}
+.card.open .chevron{transform:rotate(180deg)}
+.ci{
+  display:flex;
+  gap:8px;
+  font-size:.83rem;
+  color:#2a3a5a;
+  margin-bottom:7px;
+  align-items:flex-start;
+}
+.ci:last-child{margin-bottom:0}
+.ci-label{
+  color:#9aaabf;
+  min-width:42px;
+  font-size:.75rem;
+  padding-top:1px;
+  flex-shrink:0;
+}
+.ci-val{word-break:break-all}
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:80px 0;
+  font-size:1rem;
+  grid-column:1/-1;
+}
+@media(max-width:600px){
+  header h1{font-size:1.5rem}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">3522 District</div>
+  <h1>天躍建築聯誼會</h1>
+  <p>會員通訊錄</p>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="text" id="q" placeholder="搜尋公司、姓名、暱稱⋯⋯">
+  </div>
+  <select id="cat">
+    <option value="">全部職業類別</option>
+  </select>
+  <select id="club">
+    <option value="">全部扶輪社</option>
+  </select>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const DATA = [{"company": "如來廣告股份有限公司", "category": "不動產代銷", "name": "陳麒文", "nickname": "Charles", "title": "總監", "phone": "0970008511", "line": "charles315", "email": "", "club": "8-3同領社"}, {"company": "如來廣告股份有限公司", "category": "不動產代銷", "name": "陳麒仁", "nickname": "Macca", "title": "副總", "phone": "0953333776", "line": "Macca.tw", "email": "", "club": "6-2七星社"}, {"company": "大信建設營造股份有限公司", "category": "建設公司, 開發公司, 工程公司(營造廠、防水公司......)", "name": "康永昕", "nickname": "CP King", "title": "總經理", "phone": "0983921409", "line": "0983921409", "email": "", "club": "8-8天際社"}, {"company": "四喜維度實業有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "徐有金", "nickname": "Eugene", "title": "共同創辦人", "phone": "0963359360", "line": "0963359360", "email": "", "club": "7-4忠美社"}, {"company": "大瑞空間設計有限公司", "category": "設計師", "name": "張琪雯", "nickname": "Angel", "title": "設計師", "phone": "0955327935", "line": "angel.chi", "email": "", "club": "2-6大金社"}, {"company": "鼎盛嘉水電廚具設計行", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "陳信宏", "nickname": "Hsin", "title": "執行長", "phone": "0932391420", "line": "0932391420", "email": "", "club": "8-8天際社"}, {"company": "新各界企業有限公司", "category": "其他", "name": "朱朝熙", "nickname": "Scott", "title": "總監", "phone": "0922107177", "line": "scottchu570211", "email": "", "club": "9-3內湖社"}, {"company": "德奧國際有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "蘇柏嘉", "nickname": "Bruce", "title": "總經理", "phone": "0932141661", "line": "Supochia", "email": "", "club": "1-7松仁社"}, {"company": "蔡鈞泰建築師事務所", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師", "name": "蔡鈞泰", "nickname": "Tai", "title": "建築師", "phone": "2346-2268", "line": "tai0912513959", "email": "", "club": "8-3同領社"}, {"company": "頂天科技有限公司", "category": "工程公司(營造廠、防水公司......), 建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "湯頂立", "nickname": "Dave", "title": "", "phone": "0916891883", "line": "Georgecondo", "email": "", "club": "8-8天際社"}, {"company": "景瀚不動產估價師聯合事務所", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師", "name": "賴昇鋒", "nickname": "Alex", "title": "估價部協理/合夥估價師", "phone": "0918558136", "line": "momolai1860", "email": "", "club": "7-2忠誠社"}, {"company": "鼎吉建設股份有限公司", "category": "建設公司, 開發公司", "name": "林鴻鎧", "nickname": "Eric Lin", "title": "董事長特助", "phone": "0935008069", "line": "ericlin0212", "email": "", "club": "8-3同領社"}, {"company": "時捷國際室內裝修有限公司", "category": "設計師", "name": "劉韶華", "nickname": "Sunny", "title": "主持設計師", "phone": "0926660016", "line": "z0926660016@gmail.com", "email": "", "club": "8-2草山社"}, {"company": "承新建材", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "張家瑋", "nickname": "Nick Chang", "title": "GM", "phone": "0963001448", "line": "zkobe24", "email": "", "club": "8-8天際社"}, {"company": "廖建彰建築師事務所+  溢興室內裝修股份有限公司", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師, 裝潢公司", "name": "廖建彰", "nickname": "James", "title": "主持建築師", "phone": "0939389603", "line": "無", "email": "", "club": "6-7台北大屯山扶輪社"}, {"company": "黃令幃地政士事務所", "category": "代書", "name": "黃令幃", "nickname": "Lynne", "title": "地政士/代書", "phone": "0928368938", "line": "linwae", "email": "", "club": "10-3東聖社"}, {"company": "保昇機電工程股份有限公司", "category": "工程公司(營造廠、防水公司......)", "name": "徐瑋宗", "nickname": "Jimmy", "title": "總經理", "phone": "0933168523", "line": "", "email": "", "club": "6-2七星社"}, {"company": "奕尚企業有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "高溥駿", "nickname": "Water", "title": "業務總監", "phone": "0931-318-318", "line": "ericwade", "email": "", "club": "8-3同領社"}, {"company": "得比空間設計有限公司", "category": "設計師, 裝潢公司", "name": "侯榮元", "nickname": "Peter Hou", "title": "負責人 / 設計總監", "phone": "02-23579555 / 0933126887", "line": "0933126887", "email": "", "club": "4-6東欣社"}, {"company": "住商石牌捷運店", "category": "不動產仲介", "name": "吳佩霖", "nickname": "Samantha", "title": "專案協理", "phone": "0980088668", "line": "Sunlady93", "email": "", "club": "10-3東聖社"}, {"company": "麗揚電機企業有限公司(菲力克照明)", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "王彥霖", "nickname": "Matt", "title": "", "phone": "0922828770", "line": "mattw", "email": "", "club": "6-2七星社"}, {"company": "盈佳不動產投資顧問有限公司", "category": "不動產仲介", "name": "呂佳紋", "nickname": "Angela", "title": "", "phone": "0917890685", "line": "angelacwlu", "email": "", "club": "1-8松智社"}, {"company": "永然地政士聯合事務所", "category": "代書", "name": "李廷鈞", "nickname": "Eddison", "title": "地政士", "phone": "0916784737", "line": "eddisontw", "email": "", "club": "7-3忠信"}, {"company": "領袖海洋開發有限公司", "category": "開發公司, 工程公司(營造廠、防水公司......), 其他", "name": "陳柏叡", "nickname": "Marina", "title": "董事長", "phone": "0972921856", "line": "0972921856", "email": "", "club": "1-8松智社"}, {"company": "仲霖國際地產有限公司", "category": "開發公司, 不動產仲介", "name": "李文嬌", "nickname": "Gena", "title": "行銷行政總監", "phone": "0933129579", "line": "0933129579", "email": "", "club": "7-4忠美社"}, {"company": "東華建材事業有限公司", "category": "工程公司(營造廠、防水公司......), 建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "許 國輝", "nickname": "Benson", "title": "總經理", "phone": "0918121166", "line": "benson3366mw", "email": "", "club": "4-1東北社"}, {"company": "匯明有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......), 其他", "name": "賴顯明", "nickname": "David", "title": "總經理", "phone": "0937910149", "line": "0937910149", "email": "", "club": "8-3台北文林社"}, {"company": "APAC RPM Platform APAC (Tremco)", "category": "其他", "name": "鍾惠玲", "nickname": "Molly", "title": "Business Development sales manager", "phone": "0918-122923", "line": "", "email": "", "club": "8-8天際社"}, {"company": "辻弎室內裝修有限公司", "category": "設計師", "name": "張振彬", "nickname": "ICE", "title": "負責人", "phone": "0958720612", "line": "ice0612", "email": "", "club": "8-4八芝蘭社"}, {"company": "耀得工程有限公司", "category": "工程公司(營造廠、防水公司......), 建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "陳致瑋", "nickname": "Larry", "title": "", "phone": "0989775663", "line": "klnes3211", "email": "", "club": "8-8天際社"}, {"company": "台灣艾富克股份有限公司", "category": "工程公司(營造廠、防水公司......), 建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "柯彥廷", "nickname": "Andy", "title": "產品經理", "phone": "0922529627", "line": "twandyko", "email": "", "club": "8-8天際社"}, {"company": "瑞普萊坊/瑞普國際不動產估價師事務所", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師, 不動產仲介", "name": "王新亞", "nickname": "Alan", "title": "資深經理", "phone": "0918053059", "line": "alanwxy", "email": "", "club": "10-3東聖社"}, {"company": "住商不動產全房產部", "category": "不動產仲介", "name": "高小媛", "nickname": "Tiffany", "title": "專案經理", "phone": "0960215858", "line": "0960215858", "email": "", "club": "8-2草山社"}, {"company": "傅子綺快樂風水教室", "category": "其他", "name": "傅子綺", "nickname": "Teresa", "title": "快樂長", "phone": "0906107128", "line": "0906107128 (用電話搜尋🔍）", "email": "", "club": "8-7元宇宙社"}, {"company": "朝沛安國際股份有限公司", "category": "不動產代銷", "name": "宋昌龍", "nickname": "Brian", "title": "總經理剛才", "phone": "0911206858", "line": "0911206858", "email": "", "club": "7-5忠誠社"}, {"company": "朝沛安國際股份有限公司", "category": "不動產代銷", "name": "章家溱", "nickname": "溱溱", "title": "副總經理", "phone": "0937904765", "line": "irene325chang", "email": "", "club": "7-5忠仁社"}, {"company": "慕尚美學館", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "何文玉", "nickname": "Nicole", "title": "總經理", "phone": "0933-767-149", "line": "72665981.0", "email": "", "club": "2-3珍愛社"}, {"company": "白馬石材工業股份有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "林建志", "nickname": "James", "title": "", "phone": "0912505305", "line": "2777nick0985", "email": "", "club": "6-2七星社"}, {"company": "有閎建設股份有限公司", "category": "建設公司", "name": "葉勝全", "nickname": "Jason Yeh", "title": "負責人", "phone": "0988135579", "line": "0988135579", "email": "", "club": "8-8天際社"}, {"company": "沅鼎金屬有限公司", "category": "工程公司(營造廠、防水公司......), 建材設備公司(廚具、衛浴、磁磚、油漆、木地板......), 裝潢公司", "name": "廖訓塘", "nickname": "Andy", "title": "總經理", "phone": "0937026089", "line": "andy0937026089", "email": "", "club": "6-2七星社"}, {"company": "都市策略開發股份有限公司", "category": "建設公司", "name": "林政邦", "nickname": "Capital", "title": "副董事長", "phone": "0932137047", "line": "", "email": "", "club": "2-1士林社"}, {"company": "松瑩營造有限公司", "category": "工程公司(營造廠、防水公司......)", "name": "劉家宏", "nickname": "Oliver", "title": "經理", "phone": "0916072870", "line": "", "email": "", "club": "8-5白金社"}, {"company": "達諺建設", "category": "建設公司", "name": "方翔", "nickname": "Jerry", "title": "副總經理", "phone": "0936117864", "line": "jerryfang8", "email": "", "club": "8-8天際社"}, {"company": "富麗華不動產開發企業有限公司", "category": "開發公司, 不動產仲介", "name": "陳姿璇", "nickname": "Betty", "title": "總經理", "phone": "0960967999", "line": "0960967999", "email": "", "club": "6-象山社"}, {"company": "東齊金屬工業股份有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "林子博", "nickname": "paul", "title": "業務", "phone": "0983638129", "line": "paul830611", "email": "", "club": "4-7東美社"}, {"company": "微笑房地產仲介有限公司", "category": "不動產仲介, 代書", "name": "洪嘉鎂", "nickname": "Michelle", "title": "副理", "phone": "0966588189", "line": "0966588189", "email": "", "club": "8-5白金社"}, {"company": "富麗欣房屋仲介有限公司", "category": "不動產仲介", "name": "蘇若晴", "nickname": "Diana", "title": "董事", "phone": "0905558855", "line": "yvonnesu76", "email": "", "club": "忠信社"}, {"company": "鴻基家具有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "許富源", "nickname": "Kito", "title": "總經理", "phone": "0935538992", "line": "3274946.0", "email": "", "club": "5-4同慶社"}, {"company": "柏克傢俱", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......), 其他", "name": "姚瓊惠", "nickname": "Carrie", "title": "總監", "phone": "0939668990", "line": "0939668990", "email": "", "club": "5-4同慶社"}, {"company": "國泰人壽不動產投資部", "category": "開發公司", "name": "黃景平", "nickname": "Peter", "title": "副理", "phone": "0936868916", "line": "hpeter2016", "email": "", "club": "10-4東創社"}, {"company": "九碩室內設計", "category": "設計師, 裝潢公司", "name": "陳鴻昌", "nickname": "David", "title": "設計師", "phone": "0910896868", "line": "0910896868", "email": "", "club": "9-3內湖社"}, {"company": "有愉工程顧問有限公司", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師", "name": "洪維良", "nickname": "William Hung", "title": "執行長", "phone": "0922879462", "line": "HungWeiLiang", "email": "", "club": "4-4東豐社"}, {"company": "爾聲空間設計有限公司", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師, 設計師, 裝潢公司", "name": "陳榮聲", "nickname": "Edwin", "title": "建築師/創辦人", "phone": "0905500388", "line": "", "email": "", "club": "東豐社"}, {"company": "BSTUDIO", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師, 設計師, 裝潢公司", "name": "陳秉信建築師事務所", "nickname": "Teresa", "title": "營運總監", "phone": "0928250690", "line": "teresa0909", "email": "", "club": "東湖社"}, {"company": "樸映室內裝修設計股份有限公司", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師", "name": "陳秉信", "nickname": "Ben", "title": "建築師", "phone": "0911818178", "line": "chenpinghsin", "email": "", "club": "樂活單車扶輪社"}, {"company": "瓏曜室內裝修設計", "category": "設計師, 裝潢公司", "name": "謝耀霆", "nickname": "Tim", "title": "總監", "phone": "0975028557", "line": "tyduckin", "email": "", "club": "象山社"}, {"company": "馬鈴薯沙發企業社", "category": "其他", "name": "周春懋", "nickname": "Mao", "title": "營運長", "phone": "0922790205", "line": "smallamao", "email": "", "club": "4-8東義社"}, {"company": "海崴工程有限公司", "category": "其他", "name": "蕭有呈", "nickname": "Eric", "title": "總經理", "phone": "0931553362", "line": "31553362.0", "email": "", "club": "4-8東義社"}, {"company": "瑞普國際物業", "category": "不動產仲介", "name": "吳紘緒", "nickname": "Jackie", "title": "副總", "phone": "0928293868", "line": "0928293868", "email": "", "club": "東聖社"}, {"company": "富穀道空間設計", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師", "name": "歐奈錡", "nickname": "NIKE", "title": "建築師", "phone": "", "line": "", "email": "", "club": "4-8東義社"}, {"company": "奕尚企業有限公司 (極淨水 Premium Water)", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "高溥駿", "nickname": "Water", "title": "業務總監", "phone": "0931318418", "line": "ericwade", "email": "", "club": "8-3同領社"}, {"company": "茂勝建設有限公司", "category": "建設公司", "name": "邱麒璋", "nickname": "Franky Chiu", "title": "董事長", "phone": "0910099998", "line": "0912188722", "email": "", "club": "大仁社"}, {"company": "九碩空間設計", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......), 設計師, 裝潢公司", "name": "陳鴻昌", "nickname": "David", "title": "設計總監", "phone": "0910896868", "line": "0910896868", "email": "", "club": "內湖扶輪社"}, {"company": "郁林室內裝修設計有限公司/勝昌欣業股份有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......), 設計師, 裝潢公司", "name": "張竣嘉", "nickname": "KK", "title": "執行長", "phone": "", "line": "gdkk1225", "email": "", "club": "新東扶輪社"}, {"company": "原砌室內設計", "category": "設計師, 裝潢公司", "name": "陳昱文", "nickname": "Awen", "title": "營運長", "phone": "0927525338", "line": "awenchance", "email": "", "club": "七星"}, {"company": "大緒設計", "category": "設計師", "name": "林立誠", "nickname": "Yves", "title": "負責人", "phone": "0921343807", "line": "autarchi", "email": "", "club": "1-2仁愛社"}, {"company": "陳燦榮建築師事務所", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師", "name": "陳燦榮", "nickname": "Joseph", "title": "建築師", "phone": "0970536668", "line": "0970536668", "email": "", "club": "6-2七星社"}, {"company": "展林鋁業股份有限公司", "category": "工程公司(營造廠、防水公司......)", "name": "陳輝鴻", "nickname": "TERRY", "title": "總經理", "phone": "0963-667-009", "line": "tc560829", "email": "", "club": "12-1敦化社"}, {"company": "群信房產中信房屋", "category": "不動產仲介", "name": "吳進培", "nickname": "Eugene", "title": "業務經理", "phone": "0916805756", "line": "0916805756", "email": "", "club": "8-3同領社"}, {"company": "白馬石材", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "林建志", "nickname": "James", "title": "", "phone": "", "line": "", "email": "", "club": "6-2七星社"}, {"company": "郁林設計/大勝磚廠/勝昌欣業", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......), 設計師, 裝潢公司", "name": "張竣嘉", "nickname": "KK", "title": "執行長", "phone": "0932244198", "line": "gdkk1225", "email": "", "club": "新東扶輪社"}, {"company": "四喜維度實業有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "徐有金", "nickname": "Eugene", "title": "共同創辦人", "phone": "0963359360", "line": "0963359360", "email": "", "club": "7-4"}, {"company": "水藝空間浴室隔間有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "梁凱鈞", "nickname": "King", "title": "總經理", "phone": "0920180895", "line": "Kingliang85", "email": "", "club": "5-1敦化社"}, {"company": "長樂建設股份有限公司", "category": "建設公司, 開發公司", "name": "許健宏", "nickname": "Hung", "title": "", "phone": "", "line": "Chian741207", "email": "", "club": "同領社"}, {"company": "三承國際設計有限公司", "category": "設計師, 裝潢公司", "name": "游承祐", "nickname": "Yoyo& Arthur", "title": "負責人", "phone": "0937916649", "line": "0937916649", "email": "", "club": "8元宇宙社"}, {"company": "國泰人壽", "category": "其他", "name": "魏良全", "nickname": "Allen", "title": "處長", "phone": "0925420072", "line": "allenwei419", "email": "", "club": "4-8東義社"}, {"company": "天晴和永國際商務法律事務所", "category": "其他", "name": "蔣昕佑", "nickname": "Chris", "title": "主持律師", "phone": "0912226436", "line": "saxral", "email": "", "club": "8-1北投社"}, {"company": "良冠企業股份有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "鄭榮城", "nickname": "Elter", "title": "總經理", "phone": "0928115990", "line": "elter 0928", "email": "", "club": "東北扶輪社"}, {"company": "DO UP deco允盺有限公司", "category": "其他", "name": "戴培珊", "nickname": "Daphne", "title": "執行長", "phone": "0914139451", "line": "daphneqo6", "email": "", "club": "新中區社"}, {"company": "瑞麥地產首府（博思聯合興業）", "category": "不動產仲介", "name": "周勝國", "nickname": "Sure", "title": "總監", "phone": "0922653311", "line": "0922653311", "email": "", "club": "東豐社"}, {"company": "柏樂系統科技股份有限公司", "category": "其他", "name": "李易儒", "nickname": "Kevin", "title": "總經理", "phone": "0926303383", "line": "kevin680818", "email": "", "club": "松仁扶輪社"}, {"company": "士芃科技股份有限公司", "category": "工程公司(營造廠、防水公司......), 其他", "name": "林士博", "nickname": "Gaspar", "title": "CEO", "phone": "0928568753", "line": "gasparlin", "email": "", "club": "同領社"}, {"company": "關氏坊空間美學國際顧問公司", "category": "設計師", "name": "關歆宜", "nickname": "Sally", "title": "執行長", "phone": "sallykuan1006", "line": "", "email": "", "club": "7-5忠仁社"}, {"company": "合曜國際法律事務所", "category": "其他", "name": "鄭昱仁", "nickname": "Eason", "title": "所長", "phone": "0912544269", "line": "Easoncheng1017", "email": "", "club": "10-2東林社尊眷"}, {"company": "青雲畫廊", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "李宜洲", "nickname": "Gary", "title": "總監", "phone": "0928-198315", "line": "李宜洲", "email": "", "club": "7-3忠信社"}, {"company": "源美國際企業有限公司(狸樂聚)", "category": "裝潢公司", "name": "陳竑銘", "nickname": "Albert", "title": "", "phone": "0930-050303", "line": "c205101", "email": "", "club": "四分區東誠社"}, {"company": "怎漾設計", "category": "設計師", "name": "鄔秉宇", "nickname": "William", "title": "設計總監", "phone": "0906999222", "line": "william-wu", "email": "", "club": "大仁社"}, {"company": "晉騏建築股份有限公司", "category": "建設公司", "name": "游晉恩", "nickname": "Paul", "title": "總經理", "phone": "0972870159", "line": "", "email": "", "club": "士林社"}, {"company": "信泰誠建設", "category": "建設公司", "name": "何志正", "nickname": "Creator", "title": "董事", "phone": "0928235222", "line": "Creator49", "email": "", "club": "4-5東誠社"}, {"company": "良奇企業有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "張綺為", "nickname": "LILI Chang", "title": "業務經理", "phone": "0920664071", "line": "Smile2830", "email": "", "club": "8-8天際社"}, {"company": "念念國際室內裝修有限公司", "category": "設計師, 裝潢公司", "name": "韋念均", "nickname": "Tiffany Wei", "title": "負責人", "phone": "0915006242", "line": "0915006242", "email": "", "club": "7-3忠信社"}, {"company": "鴻鈞開發建設有限公司", "category": "建設公司, 開發公司", "name": "陳宏宇", "nickname": "Morgan", "title": "總經理", "phone": "0910358178", "line": "0910358178", "email": "", "club": "7-2忠誠社"}, {"company": "丞豐企業有限公司", "category": "工程公司(營造廠、防水公司......)", "name": "邱志杰", "nickname": "Jerry", "title": "負責人", "phone": "0966000151", "line": "0983135335", "email": "", "club": "7-8忠山社"}, {"company": "捷思保化學有限公司/捷思宇企業股份有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "林子超", "nickname": "Banni", "title": "", "phone": "", "line": "", "email": "", "club": "1-9華仁社"}, {"company": "大瀚沙發行", "category": "其他", "name": "吳承晉", "nickname": "Jin", "title": "負責人", "phone": "", "line": "0976218329", "email": "", "club": "6-9台北丰芸扶輪社"}, {"company": "李伯軒建築師事務所", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師", "name": "李伯軒", "nickname": "Po", "title": "負責人", "phone": "0966525373", "line": "Lipo16", "email": "", "club": "1-9華仁社"}, {"company": "良冠企業股份有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "鄭伊庭", "nickname": "Zoe", "title": "特助", "phone": "0935824912", "line": "yitingcheng0107", "email": "", "club": "華仁社"}, {"company": "樸映室內裝修設計股份有限公司", "category": "建築師/結構技師/土木技師/水利技師/不動產估價師, 設計師", "name": "童立姗", "nickname": "Teresa", "title": "執行長", "phone": "0928250690", "line": "teresa0909", "email": "", "club": "東湖社"}, {"company": "萍穩宜居顧問有限公司", "category": "其他", "name": "王雅萍", "nickname": "Pinn", "title": "營運長", "phone": "0936-060204", "line": "angeya", "email": "", "club": "1-10東曜社"}, {"company": "家閤興企業股份有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "范藝薰", "nickname": "Bowie", "title": "總經理", "phone": "0935729411", "line": "0935729411", "email": "", "club": "6-5新中區社"}, {"company": "峰裕建設開發股份有限公司", "category": "建設公司", "name": "陳建州", "nickname": "Ken", "title": "副董市長", "phone": "0910115558", "line": "driftmaxi0430", "email": "", "club": "7-9忠躍社"}, {"company": "琢隱設計室內裝修有限公司", "category": "設計師", "name": "高玉凡", "nickname": "Alston", "title": "負責人/總監", "phone": "0963931018", "line": "alstongao", "email": "", "club": "璽愛社"}, {"company": "非凡不動產有限公司", "category": "不動產仲介", "name": "梁哲嘉", "nickname": "CJ", "title": "業務副理", "phone": "0972177177", "line": "milat", "email": "", "club": "東曜社"}, {"company": "郁林室內裝修設計有限公司/砝翌偲空間調香", "category": "設計師, 裝潢公司", "name": "黃予勤", "nickname": "Minnie", "title": "設計總監", "phone": "0909716493", "line": "minnie1106", "email": "", "club": "1-10東曜社"}, {"company": "豐鉐建設股份有限公司", "category": "建設公司", "name": "黃韋凱", "nickname": "Kai", "title": "執行長", "phone": "0965708888", "line": "inurphace", "email": "", "club": "8-8天際社"}, {"company": "瑞普國際物業", "category": "不動產仲介", "name": "吳紘緒", "nickname": "Jackie", "title": "副總", "phone": "0928293868", "line": "0928293868", "email": "", "club": "東聖社"}, {"company": "創兆國際開發有限公司", "category": "開發公司, 建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "王群文", "nickname": "Kevin", "title": "總經理", "phone": "0937928310", "line": "0937928310", "email": "", "club": "安和社"}, {"company": "立德科技股份有限公司", "category": "工程公司(營造廠、防水公司......)", "name": "PP Henry. 鄧仁杰", "nickname": "亨利", "title": "總經理", "phone": "0932393177", "line": "g55henry", "email": "", "club": "7-3"}, {"company": "晶莊塗料有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "張聿麒", "nickname": "LiWilliam", "title": "總經理", "phone": "0905531559", "line": "william721022", "email": "", "club": "新東扶輪社"}, {"company": "蘊域科技股份有限公司", "category": "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "name": "陳建勳", "nickname": "Leon", "title": "副總", "phone": "0975511000", "line": "lch3n", "email": "", "club": "8-8天際社"}];
+const CATS = ["不動產代銷", "不動產仲介", "代書", "其他", "工程公司(營造廠、防水公司......)", "建材設備公司(廚具、衛浴、磁磚、油漆、木地板......)", "建築師/結構技師/土木技師/水利技師/不動產估價師", "建設公司", "裝潢公司", "設計師", "開發公司"];
+const CLUBS = ["1-10東曜社", "1-2仁愛社", "1-7松仁社", "1-8松智社", "1-9華仁社", "10-2東林社尊眷", "10-3東聖社", "10-4東創社", "12-1敦化社", "2-1士林社", "2-3珍愛社", "2-6大金社", "4-1東北社", "4-4東豐社", "4-5東誠社", "4-6東欣社", "4-7東美社", "4-8東義社", "5-1敦化社", "5-4同慶社", "6-2七星社", "6-5新中區社", "6-7台北大屯山扶輪社", "6-9台北丰芸扶輪社", "6-象山社", "7-2忠誠社", "7-3", "7-3忠信", "7-3忠信社", "7-4", "7-4忠美社", "7-5忠仁社", "7-5忠誠社", "7-8忠山社", "7-9忠躍社", "8-1北投社", "8-2草山社", "8-3台北文林社", "8-3同領社", "8-4八芝蘭社", "8-5白金社", "8-7元宇宙社", "8-8天際社", "8元宇宙社", "9-3內湖社", "七星", "內湖扶輪社", "同領社", "四分區東誠社", "士林社", "大仁社", "安和社", "忠信社", "新中區社", "新東扶輪社", "東北扶輪社", "東曜社", "東湖社", "東聖社", "東豐社", "松仁扶輪社", "樂活單車扶輪社", "璽愛社", "華仁社", "象山社"];
+
+const catSel = document.getElementById('cat');
+const clubSel = document.getElementById('club');
+const qInput = document.getElementById('q');
+const grid = document.getElementById('grid');
+const stats = document.getElementById('stats');
+
+CATS.forEach(c => {
+  const o = document.createElement('option');
+  o.value = c; o.textContent = c;
+  catSel.appendChild(o);
+});
+CLUBS.forEach(c => {
+  const o = document.createElement('option');
+  o.value = c; o.textContent = c;
+  clubSel.appendChild(o);
+});
+
+function shortCat(c) {
+  if (!c) return [];
+  return c.split(',').map(s => s.trim()).filter(Boolean).map(s => {
+    if (s.includes('建設公司')) return '建設公司';
+    if (s.includes('開發公司')) return '開發公司';
+    if (s.includes('工程公司')) return '工程/營造';
+    if (s.includes('建材設備')) return '建材設備';
+    if (s.includes('裝潢')) return '裝潢';
+    if (s.includes('設計師')) return '設計師';
+    if (s.includes('建築師')) return '建築師/技師';
+    if (s.includes('不動產代銷')) return '不動產代銷';
+    if (s.includes('不動產仲介')) return '不動產仲介';
+    if (s.includes('代書')) return '代書';
+    return s;
+  });
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function render(list) {
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty">沒有符合的資料</div>';
+    stats.textContent = '';
+    return;
+  }
+  stats.textContent = `顯示 ${list.length} / ${DATA.length} 筆`;
+  grid.innerHTML = list.map((d,i) => {
+    const tags = shortCat(d.category).map(t => `<span class="tag">${esc(t)}</span>`).join('');
+    const contactRows = [
+      d.phone ? `<div class="ci"><span class="ci-label">電話</span><span class="ci-val">${esc(d.phone)}</span></div>` : '',
+      d.line  ? `<div class="ci"><span class="ci-label">Line</span><span class="ci-val">${esc(d.line)}</span></div>` : '',
+      d.email ? `<div class="ci"><span class="ci-label">Email</span><span class="ci-val">${esc(d.email)}</span></div>` : '',
+    ].filter(Boolean).join('');
+    const hasContact = contactRows.length > 0;
+    return `<div class="card" data-i="${i}" onclick="toggle(this)">
+  <div class="card-top">
+    ${hasContact ? `<svg class="chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>` : ''}
+    <div class="card-company">${esc(d.company)||'—'}</div>
+    <div>${tags}</div>
+    <div class="card-person">
+      <span class="card-name">${esc(d.name)||'—'}</span>
+      ${d.nickname?`<span class="card-nick">${esc(d.nickname)}</span>`:''}
+      ${d.title?`<div class="card-title">${esc(d.title)}</div>`:''}
+    </div>
+    ${d.club?`<div class="card-club">${esc(d.club)}</div>`:''}
+  </div>
+  ${hasContact?`<div class="card-contact">${contactRows}</div>`:''}
+</div>`;
+  }).join('');
+}
+
+function toggle(card) {
+  card.classList.toggle('open');
+}
+
+function filter() {
+  const q = qInput.value.toLowerCase();
+  const cat = catSel.value;
+  const club = clubSel.value;
+  const res = DATA.filter(d => {
+    if (q && !((d.company+d.name+d.nickname+d.title+d.category).toLowerCase().includes(q))) return false;
+    if (cat && !d.category.split(',').map(s=>s.trim()).includes(cat)) return false;
+    if (club && d.club !== club) return false;
+    return true;
+  });
+  render(res);
+}
+
+qInput.addEventListener('input', filter);
+catSel.addEventListener('change', filter);
+clubSel.addEventListener('change', filter);
+
+render(DATA);
+</script>
+</body>
+</html>
